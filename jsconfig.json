@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "baseUrl": "./",
+    "paths": {
+      "@config": ["config"],
+      "@db": ["db"],
+      "@redisClient": ["db/redis"],
+      "@validators": ["validators"],
+      "@models": ["models"],
+      "@constants": ["constants"],
+      "@middlewares": ["middlewares"],
+      "@utils": ["utils"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

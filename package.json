@@ -1,0 +1,55 @@
+{
+  "name": "scaffold",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node -r module-alias/register bin/www.js",
+    "dev": "nodemon -r module-alias/register bin/www.js",
+    "prepare": "husky install"
+  },
+  "_moduleAliases": {
+    "@config": "config",
+    "@db": "db",
+    "@redisClient": "db/redis",
+    "@validators": "validators",
+    "@models": "models",
+    "@constants": "constants",
+    "@middlewares": "middlewares",
+    "@utils": "utils"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,json}": [
+      "eslint . --fix",
+      "prettier --write ."
+    ]
+  },
+  "dependencies": {
+    "argon2": "^0.28.7",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "express-async-handler": "^1.2.0",
+    "express-validator": "^6.14.2",
+    "helmet": "^5.1.1",
+    "module-alias": "^2.2.2",
+    "mongoose": "^6.5.1",
+    "nanoid": "3.3.4",
+    "redis": "^4.2.0",
+    "validator": "^13.7.0",
+    "yaml-env-load": "^1.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-json": "^3.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-security": "^1.5.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3",
+    "prettier": "2.7.1"
+  }
+}
