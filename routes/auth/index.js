@@ -10,7 +10,10 @@ router.post(
   '/register',
   validate(userValidator.register),
   asyncHandler(async (req, res) => {
-    if (req.cookies.session) return res.json({ success: false });
+    if (req.cookies.session) {
+      console.log('worked');
+      return res.json({ success: false });
+    }
 
     const { username, password } = req.body;
 

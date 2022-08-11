@@ -4,6 +4,7 @@
     "target": "es6",
     "baseUrl": "./",
     "paths": {
+      "@app": ["./app.js"],
       "@config": ["config"],
       "@db": ["db"],
       "@redisClient": ["db/redis"],

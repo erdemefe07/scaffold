@@ -2,6 +2,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       alias: [
+        ['@app', './app.js'],
         ['@config', './config'],
         ['@db', './db'],
         ['@constants', './constants'],

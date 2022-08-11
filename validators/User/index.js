@@ -10,6 +10,9 @@ module.exports = {
   },
   refreshPassword: checkSchema({
     oldPassword: {
+      isString: {
+        errorMessage: 'Old password must be string.',
+      },
       isLength: {
         errorMessage: 'Old password required',
         options: {
@@ -18,6 +21,9 @@ module.exports = {
       },
     },
     password: {
+      isString: {
+        errorMessage: 'Password must be string.',
+      },
       isLength: {
         errorMessage: 'Password can be max 72 letters',
         options: {
@@ -39,6 +45,9 @@ module.exports = {
   }),
   login: checkSchema({
     username: {
+      isString: {
+        errorMessage: 'Username must be string.',
+      },
       isLength: {
         errorMessage: 'Username must be between 1 and 30',
         options: {
@@ -48,6 +57,9 @@ module.exports = {
       },
     },
     password: {
+      isString: {
+        errorMessage: 'Password must be string.',
+      },
       isLength: {
         errorMessage: 'Password required',
         options: {
@@ -58,6 +70,9 @@ module.exports = {
   }),
   register: checkSchema({
     username: {
+      isString: {
+        errorMessage: 'Username must be string.',
+      },
       isLength: {
         errorMessage: 'Username must be between 1 and 30 letters',
         options: {
@@ -67,6 +82,9 @@ module.exports = {
       },
     },
     password: {
+      isString: {
+        errorMessage: 'Password must be string.',
+      },
       isLength: {
         errorMessage: 'Password can be max 72 letters',
         options: {

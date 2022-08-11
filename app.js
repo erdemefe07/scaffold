@@ -13,7 +13,7 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(express.json());
+app.use(express.json()); // TODO if user sends invalid json throw error
 initRoutes(app);
 
 app.use((err, req, res, next) => {

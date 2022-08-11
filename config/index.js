@@ -1,7 +1,7 @@
 const config = require('yaml-env-load');
 
-module.exports = () =>
+module.exports = (file = '.env.yaml') =>
   new Promise(async (resolve, reject) => {
-    config('.env.yaml');
+    config(file);
     resolve();
   });
