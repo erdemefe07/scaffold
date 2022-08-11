@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node -r module-alias/register bin/www.js",
     "dev": "nodemon -r module-alias/register bin/www.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": ""
   },
   "_moduleAliases": {
     "@config": "config",
