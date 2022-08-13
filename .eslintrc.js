@@ -3,6 +3,7 @@ module.exports = {
     'import/resolver': {
       alias: [
         ['@app', './app.js'],
+        ['@services', './services'],
         ['@config', './config'],
         ['@db', './db'],
         ['@constants', './constants'],
@@ -11,7 +12,7 @@ module.exports = {
         ['@models', './models'],
         ['@constants', './constants'],
         ['@middlewares', './middlewares'],
-        ['@utils', './utils'],
+        ['@exceptions', './exceptions'],
       ],
     },
   },
@@ -19,11 +20,13 @@ module.exports = {
     browser: true,
     node: true,
     es6: true,
+    'jest/globals': true,
   },
   parserOptions: {
     ecmaVersion: 'latest',
   },
   extends: [
+    'eslint:recommended',
     'prettier',
     'plugin:json/recommended',
     'plugin:node/recommended',
@@ -31,6 +34,7 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:prettier/recommended',
   ],
+  plugins: ['jest'],
   rules: {
     'prettier/prettier': 'error',
     'import/no-unresolved': [
@@ -40,5 +44,6 @@ module.exports = {
       },
     ],
     'node/no-missing-require': 'off',
+    'no-async-promise-executor': 'off',
   },
 };

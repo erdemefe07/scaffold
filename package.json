@@ -11,6 +11,7 @@
   },
   "_moduleAliases": {
     "@app": "./app.js",
+    "@services": "services",
     "@config": "config",
     "@db": "db",
     "@redisClient": "db/redis",
@@ -18,7 +19,7 @@
     "@models": "models",
     "@constants": "constants",
     "@middlewares": "middlewares",
-    "@utils": "utils"
+    "@exceptions": "exceptions"
   },
   "lint-staged": {
     "**/*.{js,jsx,json}": [
@@ -46,6 +47,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.8.2",
     "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",

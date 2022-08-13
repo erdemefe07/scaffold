@@ -5,6 +5,7 @@
     "baseUrl": "./",
     "paths": {
       "@app": ["./app.js"],
+      "@services": ["services"],
       "@config": ["config"],
       "@db": ["db"],
       "@redisClient": ["db/redis"],
@@ -12,7 +13,7 @@
       "@models": ["models"],
       "@constants": ["constants"],
       "@middlewares": ["middlewares"],
-      "@utils": ["utils"]
+      "@exceptions": ["exceptions"]
     }
   },
   "exclude": ["node_modules"]

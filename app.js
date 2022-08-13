@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const initRoutes = require('./routes');
+const { UnSuccess } = require('@exceptions');
 
 app.use(helmet());
 app.use(
@@ -19,8 +20,14 @@ initRoutes(app);
 app.use((err, req, res, next) => {
   if (!err) next();
 
-  console.log(err);
-  res.json({ success: false, msg: 'Unknown Error' });
+  switch (true) {
+    case err instanceof UnSuccess:
+      return res.json({ success: false, msg: err.msg });
+
+    default:
+      console.log(err);
+      res.json({ success: false, msg: 'Unknown Error' });
+  }
 });
 
 module.exports = app;

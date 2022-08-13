@@ -1,38 +1,18 @@
-//eslint-disable-next-line node/no-unpublished-require
+/* eslint-disable import/no-unresolved */
+/* eslint-disable node/no-unpublished-require */
 const request = require('supertest');
-const mongoose = require('mongoose');
 const { nanoid } = require('nanoid');
+const mongoose = require('mongoose');
 const { isMongoId } = require('validator');
 const { User } = require('@models');
 const { client } = require('@redisClient');
 const app = require('@app');
+const { extendations } = require('@testUtils');
 
-expect.extend({
-  toContainObject(received, argument) {
-    const pass = this.equals(received, expect.arrayContaining([expect.objectContaining(argument)]));
-
-    if (pass) {
-      return {
-        message: () =>
-          `expected ${this.utils.printReceived(received)} not to contain object ${this.utils.printExpected(argument)}`,
-        pass: true,
-      };
-    } else {
-      return {
-        message: () =>
-          `expected ${this.utils.printReceived(received)} to contain object ${this.utils.printExpected(argument)}`,
-        pass: false,
-      };
-    }
-  },
-});
-
-const user = {
-  id: null,
-  session: null,
-};
+const user = {};
 
 beforeAll(async () => {
+  extendations();
   await require('@config')('.env.test.yaml');
   await require('@db')();
 });
@@ -103,6 +83,7 @@ describe('Auth Route', () => {
       });
     });
 
+    // TODO mock them to dont need run db
     test('RegisterDTO validate should success', async () => {
       const username = 'username';
       const password = 'isStrong=1';
@@ -113,6 +94,7 @@ describe('Auth Route', () => {
       expect(isMongoId(res.body._id)).toBe(true);
       const session = res.get('Set-Cookie')[0].split('=')[1].split(';')[0];
       expect(session).not.toBeFalsy();
+
       user.id = res.body._id;
       user.session = session;
     });

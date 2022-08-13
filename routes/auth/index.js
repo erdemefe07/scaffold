@@ -1,32 +1,27 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
 const router = express.Router();
-const argon2 = require('argon2');
-const { User } = require('@models');
 const { userValidator, validate } = require('@validators');
-const { cookie } = require('@utils');
+const { userService, sessionService } = require('@services');
+const { SESSION_MAX_AGE } = require('@constants');
 
 router.post(
   '/register',
   validate(userValidator.register),
   asyncHandler(async (req, res) => {
-    if (req.cookies.session) {
-      console.log('worked');
-      return res.json({ success: false });
-    }
-
     const { username, password } = req.body;
 
-    const user = new User({
-      username,
-      password,
+    const savedUser = await userService.createUser(username, password); // TODO handle username already exists
+    const user = userService.deletePassword(savedUser);
+    const session = await sessionService.createSession(user);
+
+    res.cookie('session', session, {
+      maxAge: SESSION_MAX_AGE,
+      httpOnly: true,
+      secure: true,
     });
 
-    const saved = await user.save();
-    const response = saved.toJSON();
-    delete response.password;
-    await cookie(res, response);
-    res.send(response);
+    res.send(user);
   })
 );
 
@@ -34,29 +29,19 @@ router.post(
   '/login',
   validate(userValidator.login),
   asyncHandler(async (req, res) => {
-    if (req.cookies.session) return res.json({ success: false });
-
     const { username, password } = req.body;
 
-    const user = await User.findOne({ username }).select('+password');
-    if (!user)
-      return res.json({
-        success: false,
-        msg: 'Username or Password is wrong!',
-      });
+    const passwordedUser = await userService.validatePassword(username, password);
+    const user = userService.deletePassword(passwordedUser);
+    const session = await sessionService.createSession(user);
 
-    const isValidPass = await argon2.verify(user.password, password);
-    if (!isValidPass)
-      return res.json({
-        success: false,
-        msg: 'Username or Password is wrong!',
-      });
+    res.cookie('session', session, {
+      maxAge: SESSION_MAX_AGE,
+      httpOnly: true,
+      secure: true,
+    });
 
-    const response = user.toJSON();
-    delete response.password;
-
-    await cookie(res, response);
-    res.send(response);
+    res.send(user);
   })
 );
 

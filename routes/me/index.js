@@ -1,10 +1,9 @@
+const { sessionService, userService } = require('@services');
 const { userValidator, validate } = require('@validators');
 const express = require('express');
-const asyncHandler = require('express-async-handler');
 const router = express.Router();
-const { cookie, removeSession } = require('@utils');
-const { User } = require('@models');
-const argon2 = require('argon2');
+const asyncHandler = require('express-async-handler');
+const { SESSION_MAX_AGE } = require('@constants');
 
 router.get(
   '/',
@@ -18,28 +17,35 @@ router.post(
   validate(userValidator.refreshPassword),
   asyncHandler(async (req, res) => {
     const { oldPassword, password } = req.body;
-    // eslint-disable-next-line security/detect-possible-timing-attacks
-    if (oldPassword === password) {
-      return res.json({
-        success: false,
-        msg: 'New password cannot be equal with old password',
-      });
-    }
 
-    const user = await User.findById(req.user._id).select('+password');
+    const passwordedUser = await userService.changePassword(req.user.username, oldPassword, password);
+    const user = await userService.deletePassword(passwordedUser);
 
-    const isValidPass = await argon2.verify(user.password, oldPassword);
-    if (!isValidPass) return res.json({ success: false, msg: 'Password not valid' });
+    await sessionService.removeSession(req.cookies.session);
+    const session = await sessionService.createSession(user);
 
-    user.password = password;
-    await user.save();
+    res.cookie('session', session, {
+      maxAge: SESSION_MAX_AGE,
+      httpOnly: true,
+      secure: true,
+    });
 
-    const response = user.toJSON();
-    delete response.password;
-    await removeSession(req.cookies.session);
-    await cookie(res, response);
+    res.send(user);
+  })
+);
 
-    res.send(response);
+router.post(
+  '/logout',
+  asyncHandler(async (req, res) => {
+    await sessionService.removeSession(req.cookies.session);
+
+    res.cookie('session', 'logout', {
+      maxAge: 1,
+      httpOnly: true,
+      secure: true,
+    });
+
+    res.json({ success: true });
   })
 );
 

@@ -4,7 +4,7 @@ const { createClient } = require('redis');
 let _client = null;
 
 function connect() {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async resolve => {
     _client = createClient({ url: process.env.db.redis.uri });
     await _client.connect();
     console.log('redis connected');

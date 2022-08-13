@@ -33,6 +33,12 @@ module.exports = {
       isStrongPassword: {
         errorMessage: 'Password is not strong',
       },
+      custom: {
+        errorMessage: 'Password cannot be equal with old password',
+        options: (value, { req }) => {
+          return value !== req.body.oldPassword;
+        },
+      },
     },
     repeatPassword: {
       custom: {
