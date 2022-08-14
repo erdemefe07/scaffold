@@ -3,6 +3,7 @@ module.exports = {
     'import/resolver': {
       alias: [
         ['@app', './app.js'],
+        ['@controllers', './controllers'],
         ['@services', './services'],
         ['@config', './config'],
         ['@db', './db'],
@@ -45,5 +46,6 @@ module.exports = {
     ],
     'node/no-missing-require': 'off',
     'no-async-promise-executor': 'off',
+    curly: 'error',
   },
 };

@@ -12,6 +12,10 @@ module.exports = {
 
       return await user.save();
     } catch (error) {
+      if (error.code === 11000) {
+        throw new UnSuccess('User already exists');
+      }
+
       throw new UnSuccess({ msg: 'Unknown Error', log: error });
     }
   },
@@ -22,10 +26,14 @@ module.exports = {
   },
   async validatePassword(username, password) {
     const user = await User.findOne({ username }).select('+password');
-    if (!user) throw new UnSuccess('Username or Password is wrong!');
+    if (!user) {
+      throw new UnSuccess('Username or Password is wrong!');
+    }
 
     const isValid = await argon2.verify(user.password, password);
-    if (!isValid) throw new UnSuccess('Username or Password is wrong!');
+    if (!isValid) {
+      throw new UnSuccess('Username or Password is wrong!');
+    }
     return user;
   },
   async changePassword(username, oldPassword, password) {

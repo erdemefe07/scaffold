@@ -8,7 +8,9 @@ class UnSuccess {
 
     this.msg = options.msg;
     this.log = options.log;
-    console.log(this.log);
+    if (process.env.NODE_ENV !== 'test') {
+      console.log(this.log);
+    }
   }
 }
 

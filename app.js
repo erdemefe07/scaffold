@@ -14,18 +14,22 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(express.json()); // TODO if user sends invalid json throw error
+app.use(express.json());
 initRoutes(app);
 
 app.use((err, req, res, next) => {
-  if (!err) next();
+  if (!err) {
+    next();
+  }
 
   switch (true) {
     case err instanceof UnSuccess:
       return res.json({ success: false, msg: err.msg });
 
     default:
-      console.log(err);
+      if (process.env.NODE_ENV !== 'test') {
+        console.log(err);
+      }
       res.json({ success: false, msg: 'Unknown Error' });
   }
 });

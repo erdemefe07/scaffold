@@ -24,7 +24,7 @@ afterAll(async () => {
   await mongoose.disconnect();
 });
 
-describe('Auth Route', () => {
+describe('Auth Route DTO', () => {
   describe('POST /register', () => {
     test('RegisterDTO validate should fail when body is empty', async () => {
       const res = await request(app).post('/auth/register').send({}).expect(400);
@@ -83,7 +83,6 @@ describe('Auth Route', () => {
       });
     });
 
-    // TODO mock them to dont need run db
     test('RegisterDTO validate should success', async () => {
       const username = 'username';
       const password = 'isStrong=1';
