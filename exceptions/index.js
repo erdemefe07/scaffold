@@ -7,10 +7,12 @@ class UnSuccess {
     }
 
     this.msg = options.msg;
-    this.log = options.log;
-    if (process.env.NODE_ENV !== 'test') {
-      console.log(this.log);
-    }
+    this.log(options.log);
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  log(data) {
+    // LOGGING LOGIC
   }
 }
 

@@ -24,6 +24,7 @@ app.use((err, req, res, next) => {
 
   switch (true) {
     case err instanceof UnSuccess:
+      res.status(400);
       return res.json({ success: false, msg: err.msg });
 
     default:

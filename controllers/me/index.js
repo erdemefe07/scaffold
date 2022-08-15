@@ -25,7 +25,7 @@ module.exports = {
     res.send(user);
   }),
 
-  login: asyncHandler(async (req, res) => {
+  logout: asyncHandler(async (req, res) => {
     await sessionService.removeSession(req.cookies.session);
 
     res.cookie('session', 'logout', {

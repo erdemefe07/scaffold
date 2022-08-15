@@ -11,7 +11,7 @@ module.exports = {
   refreshPassword: checkSchema({
     oldPassword: {
       isString: {
-        errorMessage: 'Old password must be string.',
+        errorMessage: 'Old password must be string',
       },
       isLength: {
         errorMessage: 'Old password required',
@@ -22,7 +22,7 @@ module.exports = {
     },
     password: {
       isString: {
-        errorMessage: 'Password must be string.',
+        errorMessage: 'Password must be string',
       },
       isLength: {
         errorMessage: 'Password can be max 72 letters',
@@ -41,6 +41,9 @@ module.exports = {
       },
     },
     repeatPassword: {
+      isString: {
+        errorMessage: 'Repeat password must be string',
+      },
       custom: {
         errorMessage: 'Repeat password not equal with password',
         options: (value, { req }) => {
@@ -52,10 +55,10 @@ module.exports = {
   login: checkSchema({
     username: {
       isString: {
-        errorMessage: 'Username must be string.',
+        errorMessage: 'Username must be string',
       },
       isLength: {
-        errorMessage: 'Username must be between 1 and 30',
+        errorMessage: 'Username must be between 1 and 30 letters',
         options: {
           min: 1,
           max: 30,
@@ -64,7 +67,7 @@ module.exports = {
     },
     password: {
       isString: {
-        errorMessage: 'Password must be string.',
+        errorMessage: 'Password must be string',
       },
       isLength: {
         errorMessage: 'Password required',
@@ -77,7 +80,7 @@ module.exports = {
   register: checkSchema({
     username: {
       isString: {
-        errorMessage: 'Username must be string.',
+        errorMessage: 'Username must be string',
       },
       isLength: {
         errorMessage: 'Username must be between 1 and 30 letters',
@@ -89,7 +92,7 @@ module.exports = {
     },
     password: {
       isString: {
-        errorMessage: 'Password must be string.',
+        errorMessage: 'Password must be string',
       },
       isLength: {
         errorMessage: 'Password can be max 72 letters',

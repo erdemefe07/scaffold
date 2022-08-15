@@ -10,4 +10,13 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   moduleNameMapper: aliases.jest,
+  reporters: [
+    'default',
+    [
+      'jest-stare',
+      {
+        coverageLink: '../coverage/lcov-report/index.html',
+      },
+    ],
+  ],
 };

@@ -19,6 +19,7 @@ module.exports = {
     res.send(user);
   }),
   login: asyncHandler(async (req, res) => {
+    // todo if user is logged in dont log in again
     const { username, password } = req.body;
 
     const passwordedUser = await userService.validatePassword(username, password);
