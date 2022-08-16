@@ -7,7 +7,7 @@ module.exports = {
     res.send(req.user);
   }),
 
-  refreshPassword: asyncHandler(async (req, res) => {
+  changePassword: asyncHandler(async (req, res) => {
     const { oldPassword, password } = req.body;
 
     const passwordedUser = await userService.changePassword(req.user.username, oldPassword, password);

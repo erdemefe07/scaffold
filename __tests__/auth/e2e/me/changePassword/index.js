@@ -3,12 +3,12 @@ const request = require('supertest');
 const { nanoid } = require('nanoid');
 const app = require('@app');
 
-const url = '/me/refreshPassword';
+const url = '/me/changePassword';
 
 module.exports = user => {
-  describe('RefreshPassword DTO', () => {
-    describe('POST /refreshPassword', () => {
-      test('Validate should fail when body is empty', async () => {
+  describe('/me/changePassword', () => {
+    describe('Changing password', () => {
+      test('When body is empty, status should 400 and success should be false', async () => {
         const res = await request(app)
           .post(url)
           .send({})
@@ -21,7 +21,7 @@ module.exports = user => {
         });
       });
 
-      test('Validate should fail when params not string', async () => {
+      test('When params is not string, success should be false and necessary information should be provided', async () => {
         const value = {};
 
         const res = await request(app)
@@ -48,7 +48,7 @@ module.exports = user => {
         });
       });
 
-      test('oldPassword islength min 1, password maxlength 72, repeatPassword is not equal with password', async () => {
+      test('When oldPassword is less than 1 letter, password is longer than 72 letters and repeatPassword is not equal with password, success should be false and necessary information should be provided', async () => {
         const oldPassword = '';
         const repeatPassword = '';
         const password = nanoid(73);
@@ -77,7 +77,7 @@ module.exports = user => {
         });
       });
 
-      test('password equal with oldPassword and not strong', async () => {
+      test('When password is equal with oldPassword and also password is not strong, success should be false and necessary information should be provided', async () => {
         const oldPassword = 'passwd';
         const password = 'passwd';
         const repeatPassword = password;
@@ -101,7 +101,7 @@ module.exports = user => {
         });
       });
 
-      test('Should Pass', async () => {
+      test('When everything is correct, status should be 200, cookies must be provided also not equal with older session and user information should returned', async () => {
         const oldPassword = user.password;
         const password = user.password + '.';
         const repeatPassword = password;
@@ -116,6 +116,7 @@ module.exports = user => {
         expect(res.body._id).toBe(user._id);
         const session = res.get('Set-Cookie')[0].split('=')[1].split(';')[0];
         expect(session).not.toBeFalsy();
+        expect(session).not.toBe(user.session);
         user.session = session;
       });
     });

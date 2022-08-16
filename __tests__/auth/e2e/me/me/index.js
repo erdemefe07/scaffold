@@ -5,9 +5,9 @@ const app = require('@app');
 const url = '/me';
 
 module.exports = user => {
-  describe('Auth Route DTO', () => {
-    describe('GET /', () => {
-      test('MeDTO validate should success', async () => {
+  describe('/me', () => {
+    describe('User informations', () => {
+      test('Status should 200 and user information should occured', async () => {
         const { username, _id } = user;
 
         const res = await request(app)

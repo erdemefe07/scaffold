@@ -6,15 +6,15 @@ const app = require('@app');
 const url = '/auth/login';
 
 module.exports = user => {
-  describe('Auth Route DTO', () => {
-    describe('POST /login', () => {
-      test('LoginDTO validate should fail when body is empty', async () => {
+  describe('/auth/login', () => {
+    describe('Logging in', () => {
+      test('When body is empty, status should 400 and success should be false', async () => {
         const res = await request(app).post(url).send({}).expect(400);
 
         expect(res.body.success).toBe(false);
       });
 
-      test('LoginDTO validate should fail check username.isString, password.isString', async () => {
+      test('When username and password is not string, success should be false and necessary information should be provided', async () => {
         const value = {};
         const res = await request(app).post(url).send({ username: value, password: value }).expect(400);
 
@@ -23,7 +23,7 @@ module.exports = user => {
         expect(res.body.errors).toContainObject({ msg: 'Password must be string', param: 'password', value });
       });
 
-      test('LoginDTO validate should fail check username.isLength min 1, password isLength min 1', async () => {
+      test('When username and password is less than 1 letters, success should be false and necessary information should be provided', async () => {
         const usernameValue = '';
         const passwordValue = '';
         const res = await request(app).post(url).send({ username: usernameValue, password: passwordValue }).expect(400);
@@ -41,7 +41,7 @@ module.exports = user => {
         });
       });
 
-      test('LoginDTO validate should fail check username.isLength max 30', async () => {
+      test('When username is longer than 30 letters, success should be false and necessary information should be provided', async () => {
         const usernameValue = nanoid(31);
         const passwordValue = 'randomPass';
 
@@ -55,7 +55,7 @@ module.exports = user => {
         });
       });
 
-      test('LoginDTO validate should fail when user not found', async () => {
+      test('Wnen user not found, success should be false and should return Username or Password is wrong message', async () => {
         let { username, password } = user;
         username += 'salt';
         const res = await request(app).post(url).send({ username, password }).expect(400);
@@ -64,7 +64,7 @@ module.exports = user => {
         expect(res.body.msg).toBe('Username or Password is wrong!');
       });
 
-      test('LoginDTO validate should fail when password is incorrect', async () => {
+      test('Wnen username and password not matched, success should be false and should return Username or Password is wrong message', async () => {
         let { username, password } = user;
         password += 'salt';
         const res = await request(app).post(url).send({ username, password }).expect(400);
@@ -73,16 +73,7 @@ module.exports = user => {
         expect(res.body.msg).toBe('Username or Password is wrong!');
       });
 
-      test('LoginDTO validate should fail when password is incorrect', async () => {
-        let { username, password } = user;
-        password += 'salt';
-        const res = await request(app).post(url).send({ username, password }).expect(400);
-
-        expect(res.body.success).toBe(false);
-        expect(res.body.msg).toBe('Username or Password is wrong!');
-      });
-
-      test('LoginDTO validate should success', async () => {
+      test('When everything is correct, status should be 200, cookies must be provided and user information should returned', async () => {
         const { username, password, _id } = user;
         const res = await request(app).post(url).send({ username, password }).expect(200);
 

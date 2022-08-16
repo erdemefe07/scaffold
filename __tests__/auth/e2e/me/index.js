@@ -1,11 +1,11 @@
 const me = require('./me');
-const refreshPassword = require('./refreshPassword');
+const changePassword = require('./changePassword');
 const logout = require('./logout');
 const middleware = require('./middleware');
 
 module.exports = {
   me,
-  refreshPassword,
+  changePassword,
   logout,
   middleware,
 };

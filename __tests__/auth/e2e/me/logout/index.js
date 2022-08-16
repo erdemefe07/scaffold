@@ -5,19 +5,9 @@ const app = require('@app');
 const url = '/me/logout';
 
 module.exports = user => {
-  describe('Auth Route DTO', () => {
-    describe('POST /logout', () => {
-      test('Should return 401 with UnAuth message', async () => {
-        const res = await request(app)
-          .get(url)
-          .set('Cookie', [`session=${user.session}salt`])
-          .expect(401);
-
-        expect(res.body.success).toBe(false);
-        expect(res.body.msg).toBe('Unauth');
-      });
-
-      test('Should logout', async () => {
+  describe('/me/logout', () => {
+    describe('Logging out', () => {
+      test('Status should be 200 and session value should be logout', async () => {
         const res = await request(app)
           .post(url)
           .set('Cookie', [`session=${user.session}`])

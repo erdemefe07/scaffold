@@ -19,11 +19,11 @@ afterAll(async () => {
   await stopDb();
 });
 
-describe('sequentially run tests', () => {
+describe('End to End tests', () => {
   authRoute.register(user);
   authRoute.login(user);
   meRoute.middleware(user);
   meRoute.me(user);
-  meRoute.refreshPassword(user);
+  meRoute.changePassword(user);
   meRoute.logout(user);
 });

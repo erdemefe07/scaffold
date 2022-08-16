@@ -8,7 +8,7 @@ module.exports = {
   validatePassword(str) {
     return validator.isStrongPassword(str);
   },
-  refreshPassword: checkSchema({
+  changePassword: checkSchema({
     oldPassword: {
       isString: {
         errorMessage: 'Old password must be string',

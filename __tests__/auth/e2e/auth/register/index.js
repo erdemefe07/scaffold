@@ -9,15 +9,17 @@ const app = require('@app');
 const url = '/auth/register';
 
 module.exports = user => {
-  describe('Auth Route DTO', () => {
-    describe('POST /register', () => {
-      test('RegisterDTO validate should fail when body is empty', async () => {
+  describe('/auth/register', () => {
+    describe('New User Registration', () => {
+      test('When body is empty, status should 400 and success should be false', async () => {
         const res = await request(app).post(url).send({}).expect(400);
-
-        expect(res.body.success).toBe(false);
+        expect(res.body).toEqual({
+          success: false,
+          errors: expect.any(Array),
+        });
       });
 
-      test('RegisterDTO validate should fail check username.isString, password.isString', async () => {
+      test('When username and password is not string, success should be false and necessary information should be provided', async () => {
         const value = {};
         const res = await request(app).post(url).send({ username: value, password: value }).expect(400);
 
@@ -26,7 +28,7 @@ module.exports = user => {
         expect(res.body.errors).toContainObject({ msg: 'Password must be string', param: 'password', value });
       });
 
-      test('RegisterDTO validate should fail check username.isLength min 1, password isLength max 72', async () => {
+      test('When username is less than 1 letters and password is longer than 72 letters, success should be false and necessary information should be provided ', async () => {
         const usernameValue = '';
         const passwordValue = nanoid(73);
         const res = await request(app).post(url).send({ username: usernameValue, password: passwordValue }).expect(400);
@@ -44,7 +46,7 @@ module.exports = user => {
         });
       });
 
-      test('RegisterDTO validate should fail check username.isLength max 30, password isStrongPassword', async () => {
+      test('When username longer than 30 letters and password is not strong, success should be false and necessary information should be provided', async () => {
         const usernameValue = nanoid(31);
         const passwordValue = 'thisisnotstrong';
         const res = await request(app).post(url).send({ username: usernameValue, password: passwordValue }).expect(400);
@@ -62,7 +64,7 @@ module.exports = user => {
         });
       });
 
-      test('RegisterDTO validate should success', async () => {
+      test('When everything is correct, status should be 200, cookies must be provided and user information should returned', async () => {
         const { username, password } = user;
 
         const res = await request(app).post(url).send({ username, password }).expect(200);
@@ -74,7 +76,7 @@ module.exports = user => {
         user._id = res.body._id;
       });
 
-      test('RegisterDTO should fail when user is already exists', async () => {
+      test('When user is already exists, success should be false and necessary information should be provided', async () => {
         const { username, password } = user;
 
         const res = await request(app).post(url).send({ username, password }).expect(400);
@@ -83,7 +85,7 @@ module.exports = user => {
         expect(res.body.msg).toBe('User already exists');
       });
 
-      test('RegisterDTO should fail when unknown error occued and it must be log', async () => {
+      test('When unknown error has occured on saving, success should be false and should be logged', async () => {
         const logFunction = jest.spyOn(UnSuccess.prototype, 'log');
 
         jest.spyOn(User.prototype, 'save').mockImplementation(() => {
